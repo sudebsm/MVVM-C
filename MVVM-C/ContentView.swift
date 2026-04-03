@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State var viewModel = ViewModel(neworkManager: NetworkManager())
+    @State var navPath: NavigationPath?
     var body: some View {
         NavigationStack {
             Group {
@@ -38,26 +39,6 @@ struct ContentView: View {
     ContentView()
 }
 
-@Observable
-class ViewModel {
-    private var neworkManager: APIProtocol
-    var listData: [User] = []
-    var errorMessage: String?
-
-    init(neworkManager: APIProtocol = NetworkManager()) {
-        self.neworkManager = neworkManager
-    }
-    @MainActor
-    func fetchData() async {
-        do {
-            listData  = try await neworkManager.request(.getUsers)
-        } catch(let error as NetworkError) {
-            errorMessage = String(describing: error)
-         } catch {
-             errorMessage = error.localizedDescription
-        }
-    }
-}
 
 
 

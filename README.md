@@ -30,3 +30,22 @@ This repository contains a simple iOS application built with SwiftUI demonstrati
 ## API Integration
 
 The app fetches a list of mock users from `https://www.bukai95.com/users` and displays their names in a SwiftUI `List`. It includes error handling to display relevant messages if the network request or decoding fails.
+
+## App States
+
+The application demonstrates different UI states based on the network request status. Please add your screenshots to the `Screenshots` folder named as `loading.png`, `success.png`, and `failed.png`.
+
+### Loading
+Displays a loading indicator while fetching data from the API.
+
+<img src="./Screenshots/loading.png" width="250" alt="Loading State">
+
+### Success
+Displays the list of users once the data is successfully fetched and decoded.
+
+<img src="./Screenshots/success.png" width="250" alt="Success State">
+
+### Failed
+Displays an error message if the network request fails or data decoding fails.
+
+<img src="./Screenshots/failed.png" width="250" alt="Failed State">
