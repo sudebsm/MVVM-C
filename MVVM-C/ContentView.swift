@@ -50,63 +50,13 @@ class ViewModel {
     @MainActor
     func fetchData() async {
         do {
-             listData  = try await neworkManager.fetchUserData(urlStr: "https://www.bukai95.com/users1")
+            listData  = try await neworkManager.request(.getUsers)
         } catch(let error as NetworkError) {
             errorMessage = String(describing: error)
          } catch {
              errorMessage = error.localizedDescription
         }
     }
-}
-
-protocol APIProtocol {
-    func fetchUserData<T: Decodable>(urlStr: String) async throws -> [T]
-}
-
-enum NetworkError: Error {
-    case invalidURL
-    case decodingFailed
-    case badResponse(String)
-    case networkError(String)
-    case unknown
-
-}
-
-class NetworkManager : APIProtocol {
-   
-    var session: URLSession
-    
-    init(session: URLSession = .shared) {
-        self.session = session
-    }
-    
-    func fetchUserData<T: Decodable>(urlStr: String) async throws -> [T] {
-        
-        guard let url = URL(string: urlStr) else {
-            throw NetworkError.invalidURL
-        }
-        let request = URLRequest(url: url)
-        
-        let (data, res) = try await session.data(for: request)
-        
-        guard let httpResponse = res as? HTTPURLResponse else {
-            throw NetworkError.badResponse("Not an HTTP response")
-        }
-        
-        let statusCode = httpResponse.statusCode
-        
-        guard (200...299).contains(statusCode) else {
-            throw NetworkError.badResponse("Bad Response: \(statusCode)")
-        }
-        do {
-            let model = try JSONDecoder().decode([T].self, from: data)
-            return model
-        } catch {
-            throw NetworkError.decodingFailed
-        }
-    }
-    
-    
 }
 
 
